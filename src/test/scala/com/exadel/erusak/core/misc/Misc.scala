@@ -34,14 +34,26 @@ class Misc extends FlatSpec with Matchers {
 
   val anotherMap = Map("one" -> 1, 1 -> 2) //type inference happens here cause we o not provide it explicitly
 
+  // backquotes and Variable shadowing problem
   val variable = "one"
-
   val matchResult: (String) => String = {
     case `variable` => "match"
     case _ => "oops"
   }
-
   matchResult("one") should be ("match")
   matchResult("two") shouldBe "oops"
+
+  //partial function testing
+  val even: PartialFunction[Int, String] = {
+    case x if x % 2 == 0 => s"$x is even"
+  }
+  val ring: PartialFunction[Int, String] = even orElse { case x => s"$x is odd"}
+
+  (even isDefinedAt 10) shouldBe true
+  (even isDefinedAt 11) shouldBe false
+  (ring isDefinedAt 11) shouldBe true
+
+  even(10) should be ("10 is even")
+  ring(11) should be ("11 is odd")
 
 }
