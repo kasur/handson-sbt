@@ -2,7 +2,7 @@ package com.exadel.erusak.core.streams
 
 import akka.actor.ActorSystem
 import akka.stream.ActorFlowMaterializer
-import akka.stream.scaladsl.Source
+import akka.stream.scaladsl.{Sink, Source}
 import org.scalatest.{FlatSpec, Matchers}
 
 /**
@@ -31,6 +31,9 @@ class BasicTransformationTest extends FlatSpec with Matchers{
       .onComplete(_ => actorSystem.terminate())
 
   }
+
+
+  """""".r
 
 }
 

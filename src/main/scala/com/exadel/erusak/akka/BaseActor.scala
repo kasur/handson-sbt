@@ -18,6 +18,7 @@ abstract class BaseActor[T] extends Actor {
       logger.info("Ok. now i am gonna think for a while to produce...")
       sender() ! produce()
       logger.info("Okay I am done")
+
     case any =>
       logger.info("I do not know how to process this {}", any)
   }

@@ -3,6 +3,8 @@ package com.exadel.erusak.core
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit.MILLISECONDS
 
+import com.exadel.erusak.core.futures.types.Water
+
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Random, Try}
 
@@ -13,8 +15,6 @@ package object futures {
 
   type CoffeeBeans = String
   type GroundCoffee = String
-
-  case class Water(temperature: Int)
 
   type Milk = String
   type FrothedMilk = String
@@ -82,14 +82,6 @@ package object futures {
   }
 
   def combine(coffee: Espresso, milk: FrothedMilk): Cappuccino = "cappuccino"
-
-  case class GrindingException(msg: String) extends Exception(msg)
-
-  case class FrothingException(msg: String) extends Exception(msg)
-
-  case class WaterBoilingException(msg: String) extends Exception(msg)
-
-  case class BrewingException(msg: String) extends Exception(msg)
 
   implicit val _context = ExecutionContext.fromExecutor(Executors.newCachedThreadPool())
 
