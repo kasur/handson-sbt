@@ -2,6 +2,8 @@ package com.exadel.erusak.core.misc
 
 import org.scalatest.{Matchers, FlatSpec}
 
+import scala.collection.AbstractIterator
+
 /**
  * @author kasured.
  */
