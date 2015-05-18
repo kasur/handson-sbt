@@ -58,4 +58,15 @@ class Misc extends FlatSpec with Matchers {
   even(10) should be ("10 is even")
   ring(11) should be ("11 is odd")
 
+  behavior of "List operations"
+
+  it should "fold to left and calculate a sum" in {
+    val result = (0 /: List(1,2,3,4,5)) {
+      (`total sum`, `next element`) => `total sum` + `next element`
+    }
+
+    result shouldBe 15
+
+  }
+
 }

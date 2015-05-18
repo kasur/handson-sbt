@@ -2,7 +2,7 @@ package com.exadel.erusak.core.streams
 
 import akka.actor.ActorSystem
 import akka.stream.ActorFlowMaterializer
-import akka.stream.scaladsl.{Sink, Source}
+import akka.stream.scaladsl._
 import org.scalatest.{FlatSpec, Matchers}
 
 /**
@@ -10,32 +10,35 @@ import org.scalatest.{FlatSpec, Matchers}
  */
 class BasicTransformationTest extends FlatSpec with Matchers{
 
+  behavior of "Multiple sources -> flow -> Sink should be expected"
+
   implicit val actorSystem  = ActorSystem("actorSystem")
   implicit val materializer = ActorFlowMaterializer()
 
   implicit val dispatcher = actorSystem.dispatcher
 
-  val text =
-    """One, two, Freddy's coming for you
-      | Three, four, Better lock your door
-      | Five, six, grab a crucifix
-      | Seven, eight, Gonna stay up late
-      | Nine, ten, Never sleep again...
-    """.stripMargin
+  it should "slow down for the slow consumer" in {
 
-  "Basic source processing" should "complete without errors" in {
+    import FlowGraph.Implicits._
 
-    Source(() => text.split("\\s").iterator)
-      .map(_.toUpperCase)
-      .runForeach(println)
-      .onComplete(_ => actorSystem.terminate())
+    val upper: Source[Int, Unit] = Source(() => Iterator from 0).take(10)
+    val lower: Source[Int, Unit] = Source(() => Iterator from 11).take(11)
+
+    val source  = Source[(Int, Int)]() { implicit b =>
+      val zip = b.add(Zip[Int, Int]())
+
+      upper ~> zip.in0
+      lower ~> zip.in1
+
+      zip.out
+
+    }
+
+    val flow = Flow[(Int, Int)] map { case (x, y) => s"merging $x and $y to get sum ${x+y}" }
+    val sink = Sink.foreach(println)
+
+    val future = source.via(flow).runWith(sink)
 
   }
 
-
-  """""".r
-
 }
-
-
-
