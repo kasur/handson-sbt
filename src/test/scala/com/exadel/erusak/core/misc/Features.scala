@@ -1,5 +1,7 @@
 package com.exadel.erusak.core.misc
 
+import java.time.DayOfWeek
+
 import org.scalatest.{Matchers, FeatureSpec, GivenWhenThen}
 
 /**
@@ -100,6 +102,26 @@ class Features extends FeatureSpec with GivenWhenThen with Matchers {
 
       val fruit: Classifier[Fruit] = new Classifier[Orange](new Orange())
       fruit.clazz shouldBe "Orange"
+
+    }
+
+    scenario("Enumerations") {
+      object DOW extends Enumeration {
+        type DOW = Value
+        val Monday,
+            Tuesday,
+            Wednesday,
+            Thursday,
+            Friday,
+            Saturday,
+            Sunday = Value
+      }
+
+      import DOW._
+
+      def isWeekEnd(day: DOW) = day == Saturday || day == Sunday
+
+      DOW.values filterNot isWeekEnd shouldBe Set(Monday, Tuesday, Wednesday, Thursday, Friday)
 
     }
 
