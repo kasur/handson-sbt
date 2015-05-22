@@ -105,6 +105,9 @@ class Features extends FeatureSpec with GivenWhenThen with Matchers {
 
     }
 
+    abstract class Fruit
+    class Orange extends Fruit
+
     scenario("Enumerations") {
       object DOW extends Enumeration {
         type DOW = Value
@@ -126,8 +129,5 @@ class Features extends FeatureSpec with GivenWhenThen with Matchers {
     }
 
   }
-
-  abstract class Fruit
-  class Orange extends Fruit
 
 }
